@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoleCare - Cuidado total para la suela y el zapato</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============================================================ -->
+  <!-- BARRA SUPERIOR (vacía por ahora) -->
+  <!-- ============================================================ -->
+  <header class="top-bar">
+    <div class="top-bar__left"></div>
+    <div class="top-bar__right"></div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- NAVEGACIÓN PRINCIPAL (ESTÁTICA) - Logo, categorías, iconos   -->
+  <!-- ============================================================ -->
+  <nav class="main-nav">
+    <a href="#" class="main-nav__logo">
+      <span class="main-nav__logo-name">SoleCare</span>
+      <span class="main-nav__logo-tagline">Cuidado total para la suela y el zapato</span>
+    </a>
+    <button type="button" class="main-nav__categories-trigger" id="categories-trigger" aria-label="Ver categorías" aria-expanded="false">Categorías</button>
+    <ul class="main-nav__links">
+      <li><a href="#" data-category="mujer">Mujer</a></li>
+      <li><a href="#" data-category="hombre">Hombre</a></li>
+      <li><a href="#" data-category="unisex">Unisex</a></li>
+      <li><a href="#" data-category="limpieza">Cuidado y limpieza</a></li>
+      <li><a href="#" class="main-nav__link--sale">Rebajas</a></li>
+    </ul>
+    <div class="categories-panel" id="categories-panel" aria-hidden="true">
+      <a href="#" data-category="mujer">Mujer</a>
+      <a href="#" data-category="hombre">Hombre</a>
+      <a href="#" data-category="unisex">Unisex</a>
+      <a href="#" data-category="limpieza">Cuidado y limpieza</a>
+      <a href="#" class="main-nav__link--sale" data-category="rebajas">Rebajas</a>
+    </div>
+    <div class="main-nav__actions">
+      <div class="main-nav__search-wrap" id="search-wrap">
+        <input type="search" class="main-nav__search-input" id="search-input" placeholder="Buscar productos…" aria-label="Buscar productos" autocomplete="off">
+        <button type="button" class="main-nav__icon main-nav__search-btn" id="search-btn" aria-label="Abrir búsqueda">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </div>
+      <div class="main-nav__dropdown-wrap">
+        <button type="button" class="main-nav__icon main-nav__wishlist" id="wishlist-btn" aria-label="Lista de deseos" aria-expanded="false">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+        <div class="nav-dropdown nav-dropdown--favorites" id="favorites-dropdown" aria-hidden="true">
+          <div class="nav-dropdown__title">Favoritos</div>
+          <div class="nav-dropdown__list" id="favorites-dropdown-list"></div>
+          <p class="nav-dropdown__empty" id="favorites-dropdown-empty">Aún no tienes favoritos.</p>
+        </div>
+      </div>
+      <div class="main-nav__dropdown-wrap">
+        <button type="button" class="main-nav__icon main-nav__cart" id="cart-btn" aria-label="Carrito" aria-expanded="false">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="main-nav__cart-count" id="cart-count">0</span>
+        </button>
+        <div class="nav-dropdown nav-dropdown--cart" id="cart-dropdown" aria-hidden="true">
+          <div class="nav-dropdown__title">Carrito</div>
+          <div class="nav-dropdown__list" id="cart-dropdown-list"></div>
+          <p class="nav-dropdown__empty" id="cart-dropdown-empty">Tu carrito está vacío.</p>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- HERO (área para futuro video/imagen - texto según categoría)  -->
+  <!-- ============================================================ -->
+  <section class="hero" id="hero">
+    <div class="hero__image"></div>
+    <h1 class="hero__title" id="hero-title">ZAPATOS: COMODIDAD Y ESTILO</h1>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CONTENEDOR PRINCIPAL: SIDEBAR + LISTADO + PANEL DETALLE      -->
+  <!-- ============================================================ -->
+  <div class="main-container">
+    <!-- Contenedor que se reduce cuando el panel está abierto -->
+    <div class="content-wrap" id="content-wrap">
+      <!-- -------------------------------------------------------- -->
+      <!-- BARRA LATERAL DE FILTROS (ESTÁTICA - estructura)          -->
+      <!-- Opciones dinámicas según categoría/productos              -->
+      <!-- -------------------------------------------------------- -->
+      <aside class="sidebar">
+        <div class="sidebar__section">
+          <button type="button" class="sidebar__heading" aria-expanded="true">
+            Colección / Categoría
+          </button>
+          <div class="sidebar__options" id="filter-collection">
+            <!-- Opciones inyectadas por JS -->
+          </div>
+        </div>
+        <div class="sidebar__section">
+          <button type="button" class="sidebar__heading" aria-expanded="true">
+            Color
+          </button>
+          <div class="sidebar__options" id="filter-color">
+            <!-- Opciones inyectadas por JS -->
+          </div>
+        </div>
+        <div class="sidebar__section">
+          <button type="button" class="sidebar__heading" aria-expanded="true">
+            Talla
+          </button>
+          <div class="sidebar__options" id="filter-size">
+            <!-- Opciones inyectadas por JS -->
+          </div>
+        </div>
+        <div class="sidebar__section">
+          <button type="button" class="sidebar__heading" aria-expanded="true">
+            Rangos de precio
+          </button>
+          <div class="sidebar__options sidebar__price-range">
+            <label>
+              <input type="number" id="price-min" placeholder="Mín" min="0">
+            </label>
+            <span>—</span>
+            <label>
+              <input type="number" id="price-max" placeholder="Máx" min="0">
+            </label>
+          </div>
+        </div>
+      </aside>
+
+      <!-- -------------------------------------------------------- -->
+      <!-- ZONA DE LISTADO DE PRODUCTOS (DINÁMICO)                   -->
+      <!-- Contador, ordenación y cuadrícula de tarjetas             -->
+      <!-- -------------------------------------------------------- -->
+      <main class="products-area">
+        <div class="products-area__toolbar">
+          <span class="products-area__count" id="products-count">0 PRODUCTOS</span>
+          <div class="products-area__sort">
+            <label for="sort-select">Ordenar por</label>
+            <select id="sort-select" class="products-area__select">
+              <option value="release">Fecha de lanzamiento</option>
+              <option value="price-asc">Precio: menor a mayor</option>
+              <option value="price-desc">Precio: mayor a menor</option>
+              <option value="name">Nombre</option>
+            </select>
+          </div>
+        </div>
+        <div class="products-grid" id="products-grid">
+          <!-- Tarjetas de producto inyectadas por JS -->
+        </div>
+      </main>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- PANEL DE DETALLE DEL PRODUCTO (DINÁMICO)                    -->
+    <!-- Ocupa la mitad derecha de la pantalla al hacer clic        -->
+    <!-- ========================================================== -->
+    <aside class="detail-panel" id="detail-panel" aria-hidden="true">
+      <button type="button" class="detail-panel__close" id="detail-panel-close" aria-label="Cerrar">×</button>
+      <div class="detail-panel__content" id="detail-panel-content">
+        <!-- Contenido inyectado por JS al hacer clic en un producto -->
+      </div>
+    </aside>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ELEMENTOS FLOTANTES (ESTÁTICOS) - Chat / Ayuda                -->
+  <!-- ============================================================ -->
+  <div class="floating-chat">
+    <button type="button" class="floating-chat__btn" aria-label="Chat soporte">
+      <svg class="floating-chat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-1 .5 8 8 0 0 1-8-8 8.4 8.4 0 0 1 .5-1"/><path d="M21 11.5v5a2 2 0 0 1-2 2h-5l-5 5v-5H4a2 2 0 0 1-2-2v-5"/></svg>
+    </button>
+    <button type="button" class="floating-chat__btn" aria-label="Preguntas frecuentes">
+      <svg class="floating-chat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.3 1 2 2 0 0 1-1.5 3H12"/><path d="M12 17h.01"/></svg>
+    </button>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- FOOTER - Información completa de la tienda                   -->
+  <!-- ============================================================ -->
+  <footer class="site-footer">
+    <div class="footer__container">
+      <!-- Sección 1: Información de la empresa -->
+      <div class="footer__section footer__about">
+        <h3 class="footer__title">
+          <span class="footer__logo">SoleCare</span>
+        </h3>
+        <p class="footer__description">
+          Cuidado total para la suela y el zapato. Encuentra el calzado perfecto y los productos de limpieza que necesitas para mantener tus zapatos como nuevos.
+        </p>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="#" class="footer__social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="#" class="footer__social-link" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+          </a>
+          <a href="#" class="footer__social-link" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Sección 2: Enlaces rápidos -->
+      <div class="footer__section">
+        <h3 class="footer__title">Categorías</h3>
+        <ul class="footer__links">
+          <li><a href="#" data-category="mujer">Zapatos para Mujer</a></li>
+          <li><a href="#" data-category="hombre">Zapatos para Hombre</a></li>
+          <li><a href="#" data-category="unisex">Zapatos Unisex</a></li>
+          <li><a href="#" data-category="limpieza">Cuidado y Limpieza</a></li>
+          <li><a href="#" data-category="rebajas">Rebajas</a></li>
+        </ul>
+      </div>
+
+      <!-- Sección 3: Información -->
+      <div class="footer__section">
+        <h3 class="footer__title">Información</h3>
+        <ul class="footer__links">
+          <li><a href="#">Sobre Nosotros</a></li>
+          <li><a href="#">Guía de Tallas</a></li>
+          <li><a href="#">Cuidado del Calzado</a></li>
+          <li><a href="#">Preguntas Frecuentes</a></li>
+          <li><a href="#">Política de Devoluciones</a></li>
+        </ul>
+      </div>
+
+      <!-- Sección 4: Contacto y Newsletter -->
+      <div class="footer__section footer__newsletter">
+        <h3 class="footer__title">Mantente al día</h3>
+        <p class="footer__newsletter-text">
+          Suscríbete a nuestro newsletter y recibe ofertas exclusivas y novedades.
+        </p>
+        <form class="footer__newsletter-form" id="newsletter-form">
+          <div class="footer__input-group">
+            <input 
+              type="email" 
+              class="footer__input" 
+              placeholder="Tu correo electrónico" 
+              required
+              aria-label="Correo electrónico para newsletter"
+            >
+            <button type="submit" class="footer__button" aria-label="Suscribirse">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+        </form>
+        <div class="footer__contact">
+          <p class="footer__contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>Calle Principal 123, Bogotá, Colombia</span>
+          </p>
+          <p class="footer__contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            <span>+57 (1) 234 5678</span>
+          </p>
+          <p class="footer__contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <span>contacto@solecare.com</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra inferior: Copyright y enlaces legales -->
+    <div class="footer__bottom">
+      <div class="footer__bottom-content">
+        <p class="footer__copyright">
+          © 2024 SoleCare. Todos los derechos reservados.
+        </p>
+        <div class="footer__legal">
+          <a href="#">Términos y Condiciones</a>
+          <span class="footer__separator">|</span>
+          <a href="#">Política de Privacidad</a>
+          <span class="footer__separator">|</span>
+          <a href="#">Cookies</a>
+        </div>
+        <button type="button" class="footer__admin-btn" id="admin-btn" aria-label="Panel de administración">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          Admin
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================ -->
+  <!-- MODAL DE LOGIN ADMINISTRADOR                                 -->
+  <!-- ============================================================ -->
+  <div class="admin-modal" id="admin-modal" aria-hidden="true">
+    <div class="admin-modal__content">
+      <button type="button" class="admin-modal__close" id="admin-modal-close" aria-label="Cerrar">×</button>
+      <h2 class="admin-modal__title">Acceso de Administrador</h2>
+      <form class="admin-modal__form" id="admin-login-form">
+        <div class="admin-modal__field">
+          <label for="admin-password" class="admin-modal__label">Contraseña</label>
+          <input 
+            type="password" 
+            id="admin-password" 
+            class="admin-modal__input" 
+            placeholder="Ingresa la contraseña"
+            required
+            autocomplete="off"
+          >
+        </div>
+        <button type="submit" class="admin-modal__submit">Ingresar</button>
+        <p class="admin-modal__error" id="admin-error"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PANEL DE ADMINISTRACIÓN                                      -->
+  <!-- ============================================================ -->
+  <div class="admin-panel" id="admin-panel" aria-hidden="true">
+    <div class="admin-panel__header">
+      <h2 class="admin-panel__title">Panel de Administración</h2>
+      <button type="button" class="admin-panel__close" id="admin-panel-close" aria-label="Cerrar panel">×</button>
+    </div>
+    
+    <div class="admin-panel__tabs">
+      <button type="button" class="admin-panel__tab active" data-tab="products">Productos</button>
+      <button type="button" class="admin-panel__tab" data-tab="categories">Categorías</button>
+      <button type="button" class="admin-panel__tab" data-tab="inventory">Inventario</button>
+    </div>
+
+    <div class="admin-panel__content">
+      <!-- TAB: PRODUCTOS -->
+      <div class="admin-panel__tab-content active" id="tab-products">
+        <div class="admin-section">
+          <h3 class="admin-section__title">Agregar Nuevo Producto</h3>
+          <form class="admin-form" id="product-form">
+            <div class="admin-form__grid">
+              <div class="admin-form__field">
+                <label for="product-name" class="admin-form__label">Nombre del Producto *</label>
+                <input type="text" id="product-name" class="admin-form__input" required>
+              </div>
+              
+              <div class="admin-form__field">
+                <label for="product-category" class="admin-form__label">Categoría *</label>
+                <select id="product-category" class="admin-form__input" required>
+                  <option value="">Selecciona una categoría</option>
+                </select>
+              </div>
+              
+              <div class="admin-form__field">
+                <label for="product-collection" class="admin-form__label">Colección</label>
+                <input type="text" id="product-collection" class="admin-form__input" placeholder="Ej: Premium, MH Mocs">
+              </div>
+              
+              <div class="admin-form__field">
+                <label for="product-price" class="admin-form__label">Precio (COP) *</label>
+                <input type="number" id="product-price" class="admin-form__input" min="0" step="1000" required>
+              </div>
+              
+              <div class="admin-form__field">
+                <label for="product-color" class="admin-form__label">Color</label>
+                <input type="text" id="product-color" class="admin-form__input" placeholder="Ej: Negro, Azul">
+              </div>
+              
+              <div class="admin-form__field">
+                <label for="product-sizes" class="admin-form__label">Tallas (separadas por coma)</label>
+                <input type="text" id="product-sizes" class="admin-form__input" placeholder="Ej: 40, 41, 42, 43">
+              </div>
+              
+              <div class="admin-form__field admin-form__field--full">
+                <label for="product-description" class="admin-form__label">Descripción *</label>
+                <textarea id="product-description" class="admin-form__textarea" rows="4" required></textarea>
+              </div>
+              
+              <div class="admin-form__field admin-form__field--full">
+                <label for="product-image" class="admin-form__label">URL de Imagen o Video</label>
+                <input type="url" id="product-image" class="admin-form__input" placeholder="https://ejemplo.com/imagen.jpg">
+                <small class="admin-form__help">Puedes usar una URL de imagen o video</small>
+              </div>
+            
+            <div class="admin-form__field admin-form__field--full">
+              <label for="product-image-file" class="admin-form__label">Subir imagen desde tu dispositivo</label>
+              <input type="file" id="product-image-file" class="admin-form__input" accept="image/*">
+              <div id="product-image-preview" style="margin-top:0.5rem;"></div>
+              <small class="admin-form__help">Selecciona una imagen de tu teléfono o computador</small>
+            </div>
+              
+              <div class="admin-form__field">
+                <label for="product-type" class="admin-form__label">Tipo *</label>
+                <select id="product-type" class="admin-form__input" required>
+                  <option value="zapato">Zapato</option>
+                  <option value="limpieza">Limpieza</option>
+                </select>
+              </div>
+              
+              <div class="admin-form__field">
+                <label class="admin-form__checkbox-label">
+                  <input type="checkbox" id="product-on-sale" class="admin-form__checkbox">
+                  <span>Producto en Rebaja</span>
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="admin-form__submit">Agregar Producto</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- TAB: CATEGORÍAS -->
+      <div class="admin-panel__tab-content" id="tab-categories">
+        <div class="admin-section">
+          <h3 class="admin-section__title">Gestionar Categorías</h3>
+          
+          <div class="admin-categories">
+            <div class="admin-categories__add">
+              <h4 class="admin-categories__subtitle">Agregar Nueva Categoría</h4>
+              <form class="admin-form admin-form--inline" id="category-form">
+                <input type="text" id="category-name" class="admin-form__input" placeholder="Nombre de la categoría" required>
+                <button type="submit" class="admin-form__submit admin-form__submit--small">Agregar</button>
+              </form>
+            </div>
+            
+            <div class="admin-categories__list">
+              <h4 class="admin-categories__subtitle">Categorías Existentes</h4>
+              <div class="admin-categories__grid" id="categories-list">
+                <!-- Categorías se cargarán aquí -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: INVENTARIO -->
+      <div class="admin-panel__tab-content" id="tab-inventory">
+        <div class="admin-section">
+          <h3 class="admin-section__title">Inventario de Productos</h3>
+          <div class="admin-inventory__toolbar">
+            <input type="text" id="inventory-search" class="admin-form__input admin-form__input--search" placeholder="Buscar producto...">
+            <label class="admin-form__checkbox-label">
+              <input type="checkbox" id="inventory-filter-sale" class="admin-form__checkbox">
+              <span>Solo rebajas</span>
+            </label>
+          </div>
+          <div class="admin-inventory__grid" id="inventory-list">
+            <!-- Productos se cargarán aquí -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/data.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

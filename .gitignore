@@ -1,0 +1,23 @@
+node_modules/
+app/dist/
+dist/
+.DS_Store
+
+# Env secrets
+app/.env.local
+.env
+.env.*
+
+# Logs and cache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Misc
+coverage/
