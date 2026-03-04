@@ -30,7 +30,7 @@
   --gradient-card: linear-gradient(135deg, #ffffff 0%, #f7f7f7 100%);
 
   /* Tipografía */
-  --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Poppins', system-ui, -apple-system, sans-serif;
   --header-height: 100px;
   --topbar-height: 36px;
 
