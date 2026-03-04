@@ -385,8 +385,10 @@ body>* {
 }
 
 .main-nav__search-wrap.is-open {
-  background: var(--color-white);
-  border-color: var(--color-border);
+  background: rgba(40, 40, 40, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.1);
   box-shadow: var(--shadow-md);
   padding: 0.35rem 0.75rem;
 }
@@ -407,15 +409,24 @@ body>* {
   width: 160px;
   padding: 0 0.5rem;
   opacity: 1;
+  color: var(--color-white);
 }
 
 .main-nav__search-input::placeholder {
   color: var(--color-text-muted);
 }
 
+.main-nav__search-wrap.is-open .main-nav__search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
 .main-nav__search-btn {
   flex-shrink: 0;
   transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.main-nav__search-wrap.is-open .main-nav__search-btn {
+  color: var(--color-white);
 }
 
 .main-nav__wishlist.has-favorites {
@@ -2508,6 +2519,10 @@ body {
   }
 
   /* Búsqueda en móvil: overlay absoluto que NO mueve favoritos/carrito */
+  .main-nav__actions {
+    position: static;
+  }
+
   .main-nav__search-wrap {
     position: static;
   }
@@ -2515,14 +2530,17 @@ body {
   .main-nav__search-wrap.is-open {
     position: absolute;
     left: 1rem;
-    right: 70px;
+    right: 1rem;
     top: 50%;
     transform: translateY(-50%);
     z-index: 20;
-    background: var(--color-white);
-    border: 1px solid var(--color-border);
+    /* Reutiliza el estilo iPhone base, solo ajusta posición y borde */
+    background: rgba(40, 40, 40, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-soft);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg);
     padding: 0.35rem 0.75rem;
     animation: fadeIn 0.25s var(--ease);
   }
@@ -2535,11 +2553,19 @@ body {
     opacity: 1;
   }
 
-  /* No ocultar logo/categorías: el search overlay se superpone */
+  /* Al abrir búsqueda: atenuar y mandar a segundo plano a los demás elementos */
+  .main-nav__logo,
+  .main-nav__categories-trigger,
+  .main-nav__dropdown-wrap {
+    transition: opacity var(--transition-soft), transform var(--transition-soft);
+  }
+
   .main-nav--search-open .main-nav__logo,
-  .main-nav--search-open .main-nav__categories-trigger {
-    opacity: 1;
-    visibility: visible;
+  .main-nav--search-open .main-nav__categories-trigger,
+  .main-nav--search-open .main-nav__dropdown-wrap {
+    opacity: 0.15;
+    pointer-events: none;
+    transform: scale(0.95);
   }
 
   /* Footer responsive */
