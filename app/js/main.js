@@ -306,10 +306,9 @@
         (p) => `
         <article class="product-card ${p.onSale ? 'product-card--sale' : ''}" data-product-id="${p.id}" role="button" tabindex="0">
           ${p.onSale ? '<span class="product-card__sale-badge">REBAJA</span>' : ''}
-          ${
-            p.image
-              ? `<img class="product-card__image" src="${p.image}" alt="${p.name}">`
-              : `<div class="product-card__image product-card__image--placeholder">${p.type === 'limpieza' ? ICON_CLEANING : ICON_SHOE}</div>`
+          ${p.image
+            ? `<img class="product-card__image" src="${p.image}" alt="${p.name}">`
+            : `<div class="product-card__image product-card__image--placeholder">${p.type === 'limpieza' ? ICON_CLEANING : ICON_SHOE}</div>`
           }
           <button type="button" class="product-card__wishlist ${isFavorite(p.id) ? 'is-favorite' : ''}" data-product-id="${p.id}" aria-label="${isFavorite(p.id) ? 'Quitar de favoritos' : 'Añadir a favoritos'}">${getHeartSVG(isFavorite(p.id))}</button>
           <div class="product-card__info">
@@ -354,11 +353,10 @@
     const inFav = isFavorite(product.id);
     detailPanelContent.innerHTML = `
       <div class="detail-panel__image-wrap">
-        ${
-          product.image
-            ? `<img class="detail-panel__image" src="${product.image}" alt="${product.name}" style="width:100%;height:auto;display:block;">`
-            : `<div class="detail-panel__image detail-panel__image--placeholder product-card__image--placeholder" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">${product.type === 'limpieza' ? ICON_CLEANING : ICON_SHOE}</div>`
-        }
+        ${product.image
+        ? `<img class="detail-panel__image" src="${product.image}" alt="${product.name}" style="width:100%;height:auto;display:block;">`
+        : `<div class="detail-panel__image detail-panel__image--placeholder product-card__image--placeholder" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">${product.type === 'limpieza' ? ICON_CLEANING : ICON_SHOE}</div>`
+      }
       </div>
       <h2 class="detail-panel__title">${product.name}</h2>
       <p class="detail-panel__category">${product.collection || product.category}</p>
@@ -647,6 +645,54 @@
   updateCartCountUI();
   updateWishlistUI();
   renderCartDropdown();
+
+  // --- Carrusel de videos en el Hero (transición con oscurecimiento) ---
+  function initVideoCarousel() {
+    const videos = document.querySelectorAll('.hero__video');
+    const overlay = document.querySelector('.hero__overlay');
+    if (videos.length === 0 || !overlay) return;
+
+    let currentVideoIndex = 0;
+    let isTransitioning = false;
+
+    // Configurar el primer video
+    videos[0].classList.add('hero__video--active');
+
+    // Función para cambiar al siguiente video con efecto de desvanecimiento
+    function nextVideo() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      // Fase 1: Oscurecer el overlay
+      overlay.classList.add('hero__overlay--dark');
+
+      // Fase 2: Después de que el overlay se oscurece, cambiar el video
+      setTimeout(() => {
+        // Quitar clase active del video actual
+        videos[currentVideoIndex].classList.remove('hero__video--active');
+
+        // Avanzar al siguiente video
+        currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+
+        // Agregar clase active al nuevo video
+        videos[currentVideoIndex].classList.add('hero__video--active');
+
+        // Pequeña pausa para que el video entrante empiece a aparecer
+        setTimeout(() => {
+          // Fase 3: Quitar la oscuridad del overlay
+          overlay.classList.remove('hero__overlay--dark');
+          isTransitioning = false;
+        }, 400);
+      }, 1200);
+    }
+
+    // Cambiar video cada 6 segundos
+    setInterval(nextVideo, 6000);
+  }
+
+  // Iniciar carrusel cuando el DOM esté listo
+  initVideoCarousel();
+
   document.addEventListener('products-updated', () => {
     renderFilters();
     renderProducts();
