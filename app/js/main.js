@@ -668,14 +668,20 @@
 
       // Fase 2: Después de que el overlay se oscurece, cambiar el video
       setTimeout(() => {
-        // Quitar clase active del video actual
+        // Pausar y quitar clase active del video actual
+        videos[currentVideoIndex].pause();
         videos[currentVideoIndex].classList.remove('hero__video--active');
 
         // Avanzar al siguiente video
         currentVideoIndex = (currentVideoIndex + 1) % videos.length;
 
-        // Agregar clase active al nuevo video
-        videos[currentVideoIndex].classList.add('hero__video--active');
+        // Reproducir y agregar clase active al nuevo video
+        const nextVid = videos[currentVideoIndex];
+        nextVid.classList.add('hero__video--active');
+        const playPromise = nextVid.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => console.log('Video play interrupted:', err));
+        }
 
         // Pequeña pausa para que el video entrante empiece a aparecer
         setTimeout(() => {

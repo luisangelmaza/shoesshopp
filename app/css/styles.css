@@ -2528,7 +2528,8 @@ body {
   }
 
   .main-nav__search-wrap.is-open .main-nav__search-input {
-    width: 100%;
+    flex: 1;
+    width: auto;
     min-width: 0;
     max-width: 100%;
     opacity: 1;
