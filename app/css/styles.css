@@ -891,32 +891,94 @@ body>* {
   font-weight: 500;
 }
 
-.products-area__sort {
+.sort-label {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+/* Custom Select (Reemplazo del nativo para estilo iOS completo) */
+.custom-select {
+  position: relative;
+  min-width: 210px;
+  user-select: none;
+}
+
+.custom-select__trigger {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.products-area__select {
-  padding: 0.4rem 0.75rem;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-soft);
+  justify-content: space-between;
+  padding: 0.55rem 1rem;
   background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
   font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
   cursor: pointer;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s ease;
 }
 
-.products-area__select:hover {
-  border-color: var(--color-accent);
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-1px);
+.custom-select__trigger:active {
+  background: var(--color-gray-light);
+  transform: scale(0.98);
 }
 
-.products-area__select:focus {
-  outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-light);
+.custom-select__arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-muted);
+  transition: transform 0.3s ease;
+}
+
+.custom-select.is-open .custom-select__arrow {
+  transform: rotate(-180deg);
+}
+
+.custom-select__options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.25s ease;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.custom-select.is-open .custom-select__options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.custom-select__option {
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  border-bottom: 1px solid var(--color-gray-light);
+}
+
+.custom-select__option:last-child {
+  border-bottom: none;
+}
+
+.custom-select__option:hover {
+  background: var(--color-gray-light);
+}
+
+.custom-select__option.selected {
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--color-gray-light);
 }
 
 /* Cuadrícula de tarjetas de producto */
@@ -2360,9 +2422,24 @@ body {
 
   .main-nav__categories-trigger {
     display: flex;
+    align-items: center;
+    justify-content: center;
     order: 2;
     max-width: 120px;
-    transition: opacity var(--transition-soft), visibility var(--transition-soft), max-width var(--transition-soft), margin var(--transition-soft), padding var(--transition-soft);
+    padding: 0.5rem 1rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: opacity var(--transition-soft), visibility var(--transition-soft), max-width var(--transition-soft), margin var(--transition-soft), padding var(--transition-soft), background 0.25s ease, transform 0.2s ease;
+  }
+
+  .main-nav__categories-trigger:active {
+    background: var(--color-gray-light);
+    transform: scale(0.96);
   }
 
   .main-nav__search-wrap {
@@ -2420,30 +2497,45 @@ body {
 
   .sidebar__heading {
     width: 100%;
-    padding: 0.75rem 1rem;
-    background: var(--color-accent-light);
-    border: 2px solid var(--color-accent);
-    border-radius: var(--radius-soft);
-    margin-bottom: 0.35rem;
-    font-size: 0.9rem;
-    color: var(--color-accent);
-    transition: background var(--transition-fast), transform var(--transition-fast);
+    padding: 1rem 1.25rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.25s ease, transform 0.2s ease;
   }
 
+  .sidebar__heading:active {
+    background: var(--color-gray-light);
+    transform: scale(0.98);
+  }
+
+  /* Eliminamos el hover robusto para móviles */
   .sidebar__heading:hover {
-    background: var(--color-accent);
-    color: var(--color-white);
-    transform: translateX(5px);
+    background: var(--color-gray-light);
   }
 
   .sidebar__heading::after {
-    content: '▼';
-    font-size: 0.65rem;
-    transition: transform 0.2s ease;
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--color-text-muted);
+    border-bottom: 2px solid var(--color-text-muted);
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+    margin-right: 4px;
   }
 
   .sidebar__section.is-open .sidebar__heading::after {
-    transform: rotate(180deg);
+    transform: rotate(-135deg);
+    margin-top: 4px;
   }
 
   .sidebar__options {

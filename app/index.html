@@ -176,8 +176,25 @@
         <div class="products-area__toolbar">
           <span class="products-area__count" id="products-count">0 PRODUCTOS</span>
           <div class="products-area__sort">
-            <label for="sort-select">Ordenar por</label>
-            <select id="sort-select" class="products-area__select">
+            <span class="sort-label">Ordenar por</span>
+            <!-- Select customizado para diseño iOS elegante -->
+            <div class="custom-select" id="custom-sort">
+              <div class="custom-select__trigger" id="custom-sort-trigger">
+                <span>Fecha de lanzamiento</span>
+                <svg class="custom-select__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </div>
+              <div class="custom-select__options" id="custom-sort-options">
+                <div class="custom-select__option selected" data-value="release">Fecha de lanzamiento</div>
+                <div class="custom-select__option" data-value="price-asc">Precio: menor a mayor</div>
+                <div class="custom-select__option" data-value="price-desc">Precio: mayor a menor</div>
+                <div class="custom-select__option" data-value="name">Nombre</div>
+              </div>
+            </div>
+            <!-- Mantenemos el original oculto para no romper lógica JS existente -->
+            <select id="sort-select" style="display: none;">
               <option value="release">Fecha de lanzamiento</option>
               <option value="price-asc">Precio: menor a mayor</option>
               <option value="price-desc">Precio: mayor a menor</option>
@@ -207,13 +224,6 @@
   <!-- ELEMENTOS FLOTANTES (ESTÁTICOS) - Chat / Ayuda                -->
   <!-- ============================================================ -->
   <div class="floating-chat">
-    <button type="button" class="floating-chat__btn" aria-label="Chat soporte">
-      <svg class="floating-chat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M21 11.5a8.4 8.4 0 0 1-1 .5 8 8 0 0 1-8-8 8.4 8.4 0 0 1 .5-1" />
-        <path d="M21 11.5v5a2 2 0 0 1-2 2h-5l-5 5v-5H4a2 2 0 0 1-2-2v-5" />
-      </svg>
-    </button>
     <button type="button" class="floating-chat__btn" aria-label="Preguntas frecuentes">
       <svg class="floating-chat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

@@ -601,6 +601,53 @@
   }
 
   /**
+   * Maneja el Custom Select de "Ordenar por" (estilo iOS)
+   */
+  function bindCustomSelect() {
+    const customSort = document.getElementById('custom-sort');
+    const customTrigger = document.getElementById('custom-sort-trigger');
+    const customOptions = document.querySelectorAll('.custom-select__option');
+    const nativeSelect = document.getElementById('sort-select');
+
+    if (!customSort || !customTrigger) return;
+
+    // Toggle dropdown
+    customTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      customSort.classList.toggle('is-open');
+    });
+
+    // Handle option click
+    customOptions.forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const value = option.dataset.value;
+        const text = option.textContent;
+
+        // Update trigger text
+        customTrigger.querySelector('span').textContent = text;
+
+        // Update selected class
+        customOptions.forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+
+        // Update global sort state and re-render
+        if (nativeSelect) nativeSelect.value = value;
+        sortBy = value;
+        renderProducts();
+
+        // Close dropdown
+        customSort.classList.remove('is-open');
+      });
+    });
+
+    // Close on outside click
+    window.addEventListener('click', () => {
+      customSort.classList.remove('is-open');
+    });
+  }
+
+  /**
    * Enlaza los enlaces de categorías del footer
    */
   function bindFooterCategoryLinks() {
@@ -645,6 +692,7 @@
   updateCartCountUI();
   updateWishlistUI();
   renderCartDropdown();
+  bindCustomSelect();
 
   // --- Carrusel de videos en el Hero (transición con oscurecimiento) ---
   function initVideoCarousel() {
