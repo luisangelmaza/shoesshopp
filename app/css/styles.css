@@ -16,8 +16,8 @@
   --color-success-light: #f2f2f2;
   --color-pink: #444444;
   --color-pink-light: #f2f2f2;
-  --color-sale: #111111;
-  --color-sale-light: #f2f2f2;
+  --color-sale: #d90429;
+  --color-sale-light: #ffccd5;
   --color-border: #e0e0e0;
   --color-border-hover: #999999;
   --color-gray-dark: #444444;
@@ -323,7 +323,8 @@ body>* {
   width: 100%;
 }
 
-.main-nav__link--sale {
+.main-nav__link--sale,
+a[data-category="rebajas"] {
   color: var(--color-sale) !important;
   font-weight: 600;
   animation: pulse 2s ease-in-out infinite;
