@@ -709,6 +709,15 @@
     // Función para cambiar al siguiente video con efecto de desvanecimiento
     function nextVideo() {
       if (isTransitioning) return;
+
+      const nextIndex = (currentVideoIndex + 1) % videos.length;
+      const nextVid = videos[nextIndex];
+
+      // Asegurarse de que el siguiente video esté cargado o empezando a cargar
+      if (nextVid.readyState < 3) {
+        nextVid.load();
+      }
+
       isTransitioning = true;
 
       // Fase 1: Oscurecer el overlay
@@ -716,19 +725,25 @@
 
       // Fase 2: Después de que el overlay se oscurece, cambiar el video
       setTimeout(() => {
-        // Pausar y quitar clase active del video actual
+        // Pausar el video actual
         videos[currentVideoIndex].pause();
         videos[currentVideoIndex].classList.remove('hero__video--active');
 
         // Avanzar al siguiente video
-        currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+        currentVideoIndex = nextIndex;
 
-        // Reproducir y agregar clase active al nuevo video
-        const nextVid = videos[currentVideoIndex];
+        // Reproducir el nuevo video
         nextVid.classList.add('hero__video--active');
         const playPromise = nextVid.play();
+
         if (playPromise !== undefined) {
-          playPromise.catch(err => console.log('Video play interrupted:', err));
+          playPromise.catch(err => {
+            console.warn('Video play interrupted or failed:', err);
+            // Reintentar si falló por interacción
+            if (err.name === 'NotAllowedError') {
+              console.log('Reintentando reproducción de video...');
+            }
+          });
         }
 
         // Pequeña pausa para que el video entrante empiece a aparecer
@@ -736,12 +751,12 @@
           // Fase 3: Quitar la oscuridad del overlay
           overlay.classList.remove('hero__overlay--dark');
           isTransitioning = false;
-        }, 400);
-      }, 1200);
+        }, 300);
+      }, 800); // Reducido un poco para que sea más fluido
     }
 
-    // Cambiar video cada 6 segundos
-    setInterval(nextVideo, 6000);
+    // Cambiar video cada 8 segundos (más tiempo para apreciar 4K si carga)
+    setInterval(nextVideo, 8000);
   }
 
   // Iniciar carrusel cuando el DOM esté listo
