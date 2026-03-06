@@ -34,7 +34,7 @@
   const inventorySearch = document.getElementById('inventory-search');
   const inventoryFilterSale = document.getElementById('inventory-filter-sale');
 
-  
+
 
   /**
    * Abre el modal de login
@@ -129,7 +129,7 @@
         names = data.map(x => x.name).filter(Boolean);
       }
     }
-    
+
     categorySelect.innerHTML = '<option value="">Selecciona una categoría</option>';
     names.forEach(cat => {
       const option = document.createElement('option');
@@ -252,7 +252,7 @@
 
       alert(editingProductId ? 'Producto actualizado correctamente' : 'Producto agregado correctamente');
       resetProductForm();
-      if (typeof refreshProducts === 'function') refreshProducts();
+      if (typeof window.refreshProducts === 'function') window.refreshProducts();
       loadInventory();
     } catch (err) {
       alert('Error guardando producto: ' + (err && err.message ? err.message : err));
@@ -279,7 +279,7 @@
     const searchTerm = inventorySearch.value.toLowerCase();
     const onlySale = inventoryFilterSale.checked;
 
-    let filteredProducts = PRODUCTS;
+    let filteredProducts = window.PRODUCTS || [];
 
     if (searchTerm) {
       filteredProducts = filteredProducts.filter(p =>
@@ -348,7 +348,8 @@
    * Edita un producto
    */
   function editProduct(productId) {
-    const product = PRODUCTS.find(p => p.id === productId);
+    const products = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
+    const product = products.find(p => p.id === productId);
     if (!product) return;
 
     editingProductId = productId;
@@ -377,7 +378,8 @@
    * Elimina un producto
    */
   function deleteProduct(productId) {
-    const product = PRODUCTS.find(p => p.id === productId);
+    const products = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
+    const product = products.find(p => p.id === productId);
     if (!product) return;
 
     if (confirm(`¿Estás seguro de eliminar "${product.name}"? Esta acción no se puede deshacer.`)) {
@@ -385,8 +387,8 @@
         window.supabase.from('products').delete().eq('id', productId)
           .then(({ error }) => {
             if (error) throw error;
-            if (typeof refreshProducts === 'function') refreshProducts();
-            if (typeof renderProducts === 'function') renderProducts();
+            if (typeof window.refreshProducts === 'function') window.refreshProducts();
+            if (typeof window.renderProducts === 'function') window.renderProducts();
             loadInventory();
             alert('Producto eliminado correctamente');
           })
@@ -399,15 +401,16 @@
    * Alterna el estado de rebaja de un producto
    */
   function toggleSale(productId) {
-    const product = PRODUCTS.find(p => p.id === productId);
+    const products = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
+    const product = products.find(p => p.id === productId);
     if (!product) return;
     const next = { ...product, onSale: !product.onSale };
     if (window.supabase) {
       window.supabase.from('products').update({ onSale: next.onSale }).eq('id', productId)
         .then(({ error }) => {
           if (error) throw error;
-          if (typeof refreshProducts === 'function') refreshProducts();
-          if (typeof renderProducts === 'function') renderProducts();
+          if (typeof window.refreshProducts === 'function') window.refreshProducts();
+          if (typeof window.renderProducts === 'function') window.renderProducts();
           loadInventory();
           alert(`Producto ${next.onSale ? 'marcado' : 'desmarcado'} como rebaja`);
         })

@@ -755,4 +755,6 @@
     updateWishlistUI();
     renderCartDropdown();
   });
+
+  window.renderProducts = renderProducts;
 })();
