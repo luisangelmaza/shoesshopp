@@ -8,7 +8,7 @@ if (typeof SUPABASE_URL === 'string' && SUPABASE_URL && typeof SUPABASE_ANON_KEY
   supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   window.supabase = supabase;
 } else {
-  console.error('Supabase no configurado: define VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY');
+  console.error('Supabase no configurado: define VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en el archivo .env');
 }
 
 async function refreshProducts() {
